@@ -1,0 +1,51 @@
+name: android
+on:
+  pull_request:
+  push:
+    branches: [develop, main]
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm test
+      - run: npm run bundle:android
+      - run: npm audit --omit=dev --audit-level=critical
+
+  release:
+    if: github.ref == 'refs/heads/main' && github.event_name == 'push'
+    needs: check
+    runs-on: ubuntu-latest
+    environment: play-internal
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with: { node-version: 20, cache: npm }
+      - uses: actions/setup-java@v4
+        with: { distribution: temurin, java-version: 17 }
+      - uses: ruby/setup-ruby@v1
+        with: { ruby-version: '3.3', bundler-cache: false }
+      - run: npm ci
+      - name: Restore secrets (never committed)
+        run: |
+          echo "${{ secrets.UPLOAD_KEYSTORE_BASE64 }}" | base64 -d > android/app/zproogo-upload.keystore
+          echo "${{ secrets.GOOGLE_SERVICES_JSON_BASE64 }}" | base64 -d > android/app/google-services.json
+          cat >> ~/.gradle/gradle.properties <<PROPS
+          ZPROOGO_UPLOAD_STORE_FILE=zproogo-upload.keystore
+          ZPROOGO_UPLOAD_STORE_PASSWORD=${{ secrets.UPLOAD_STORE_PASSWORD }}
+          ZPROOGO_UPLOAD_KEY_ALIAS=${{ secrets.UPLOAD_KEY_ALIAS }}
+          ZPROOGO_UPLOAD_KEY_PASSWORD=${{ secrets.UPLOAD_KEY_PASSWORD }}
+          ZPROOGO_VERSION_CODE=${{ github.run_number }}
+          MAPS_API_KEY=${{ secrets.MAPS_API_KEY }}
+          PROPS
+      - run: gem install fastlane -N
+      - name: Build AAB and upload to Play internal track
+        env:
+          PLAY_SERVICE_ACCOUNT_JSON: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+        run: fastlane android internal
+      - uses: actions/upload-artifact@v4
+        with: { name: app-release-aab, path: android/app/build/outputs/bundle/release/app-release.aab }

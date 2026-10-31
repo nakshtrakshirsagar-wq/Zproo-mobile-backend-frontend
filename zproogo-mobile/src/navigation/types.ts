@@ -1,0 +1,21 @@
+export type RootParams = {
+  Onboarding: undefined; Location: undefined; Main: { screen?: string } | undefined; ForceUpdate: undefined;
+  LoginGate: undefined; LinkMobile: { fromOnboarding?: boolean } | undefined; Welcome: { merged?: { holdsMerged: number; searchesMerged: number; savedTravellers: number }; fromOnboarding?: boolean };
+  ComingSoon: { service?: string } | undefined;
+  BusHome: undefined; BusSearch: { women?: boolean } | undefined; BusResults: { from: string; to: string; date: string; women: boolean };
+  SeatLayout: { trip: any; women: boolean }; BoardingDropping: { trip: any; seatIds: string[]; women: boolean; totalPaise?: number }; BusPassengers: { trip?: any; boarding?: any; dropping?: any } | undefined;
+  FlightSearch: undefined; FlightList: { query: any }; FareOptions: { flight: any; query: any }; FlightTravellers: undefined;
+  FlightSeats: undefined; FlightAddons: undefined; IntlChecks: undefined;
+  HotelSearch: undefined; HotelList: { query: any }; HotelMap: { hotels: any[]; query: any }; HotelDetails: { id: string; query: any };
+  Rooms: { hotel: any; query: any }; HotelGuest: undefined;
+  TrainSearch: undefined; TrainList: { query: any }; IrctcLink: { next?: string } | undefined; TrainPassengers: undefined; PnrStatus: { pnr?: string } | undefined;
+  CabSearch: { tripType?: 'CITY' | 'AIRPORT' | 'OUTSTATION' | 'RENTAL' } | undefined; CabOptions: { req: any }; CabRider: undefined; CabRide: { id: string };
+  ParcelHome: undefined; ParcelPickup: undefined; ParcelDrop: undefined; ParcelVehicle: undefined; ParcelGoods: undefined; ParcelReview: undefined;
+  ParcelOrder: { id: string }; ParcelOrders: undefined;
+  BikeHome: undefined; BikeList: undefined; BikeDetails: { id: string }; BikeKyc: undefined; BikeReview: undefined; BikeBooked: { id: string }; BikePickup: { id: string };
+  BikeRide: { id: string }; BikeReturn: { id: string }; BikeClosed: { id: string }; BikeRentals: undefined;
+  Checkout: undefined; PaymentStatus: { bookingId: string };
+  BookingDetails: { id: string }; Ticket: { id: string }; TrackBus: { id: string }; FlightStatus: { id: string }; RateTrip: { id: string };
+  SafetyKit: { id: string }; CancelSelect: { id: string }; CancelConfirm: { id: string; itemIds: string[] }; RefundTracker: { bookingId?: string; refundId?: string };
+  RefundPayout: { refundId: string }; Profile: undefined; Travellers: undefined; EmergencyContacts: undefined; Wallet: undefined; Settings: undefined; Offers: undefined; Help: { bookingId?: string; category?: string } | undefined;
+};

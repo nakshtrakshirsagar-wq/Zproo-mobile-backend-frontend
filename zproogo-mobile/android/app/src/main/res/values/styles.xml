@@ -1,0 +1,10 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.DayNight.NoActionBar">
+        <item name="android:editTextBackground">@drawable/rn_edit_text_material</item>
+        <!-- Phone's back/home/recent button bar: white in light theme (matches the tab bar) -->
+        <item name="android:navigationBarColor">#FFFFFF</item>
+    </style>
+
+</resources>

@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- RELEASE: HTTPS only, system CAs only (user-installed CAs such as Burp/Charles are NOT trusted).
+     Public-key pinning for api.zproogo.com is done in JS (react-native-ssl-public-key-pinning, see src/security/pinning.ts).
+     You may ALSO add a <pin-set> here once you have your real SPKI hashes (always 2 pins + expiration). -->
+<network-security-config>
+    <base-config cleartextTrafficPermitted="false">
+        <trust-anchors>
+            <certificates src="system" />
+        </trust-anchors>
+    </base-config>
+</network-security-config>
